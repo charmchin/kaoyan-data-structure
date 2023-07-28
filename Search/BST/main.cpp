@@ -96,6 +96,44 @@ BiTree BST_Search(BiTree T,KeyType k,BiTree &parent)
     return T;
 }
 
+//二叉排序树删除代码
+void DeleteNode(BiTree &root,KeyType x)
+{
+    if(NULL==root)
+    {
+        return;
+    }
+    if(root->key>x)//当前结点大于要删除的结点，往左子树找
+    {
+        DeleteNode(root->lchild,x);
+    }else if(root->key<x)//当前结点小于要删除的结点，往右子树找
+    {
+        DeleteNode(root->rchild,x);
+    }else{//找到了要删除的结点
+        if(root->lchild==NULL)//左子树为空，右子树直接顶上去
+        {
+            BiTree tempNode=root;
+            root=root->rchild;
+            free(tempNode);
+        }else if(root->rchild==NULL)//右子树为空，左子树直接顶上去
+        {
+            BiTree tempNode=root;
+            root=root->lchild;
+            free(tempNode);
+        }else{//两边都不为空
+            //一般的删除策略是左子树的最大数据 或 右子树的最小数据，左子树最右，右子树最左
+            // 代替要删除的节点(这里采用查找左子树最大数据来代替，最大数据是左子树的最右结点)
+            BiTree tempNode=root->lchild;
+            while(tempNode->rchild!=NULL)
+            {
+                tempNode=tempNode->rchild;
+            }
+            root->key=tempNode->key;//把tempNode对应的值替换到要删除的值的位置上
+            DeleteNode(root->lchild,tempNode->key);//在左子树中找到tempNode的值，把其删除
+        }
+    }
+}
+
 //二叉排序树新建，中序遍历，查找
 int main() {
     BiTree T=NULL;//树根
@@ -111,5 +149,9 @@ int main() {
     }else{
         printf("not find\n");
     }
+    DeleteNode(T,20);//删除某个结点
+    printf("after deleting:\n");
+    InOrder(T);
+    printf("\n");
     return 0;
 }
