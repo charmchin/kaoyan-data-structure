@@ -63,9 +63,6 @@ void BubbleSort(ElemType *A,int n)
 int main() {
     SSTable ST;
     ST_Init(ST,10);
-//    ElemType A[10]={ 64, 94, 95, 79, 69, 84, 18, 22, 12 ,78};
-    //内存copy接口，当你copy整型数组，或者浮点型时，要用memcpy，不能用strcpy，初试考memcpy概率很低
-//    memcpy(ST.elem,A,sizeof(A));//这是为了降低调试难度，每次数组数据固定而设计的
     ST_print(ST);//随机后的结果打印
     BubbleSort(ST.elem, 10);
     ST_print(ST);//排序后再次打印
